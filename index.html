@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Downtime Cost Calculator</title>
+    <title>Downtime Cost Calculator - Unison Mining Consulting</title>
     <style>
         * {
             margin: 0;
@@ -15,8 +15,41 @@
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
             background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
             min-height: 100vh;
-            padding: 20px;
+            padding: 0;
+            margin: 0;
             color: #062d54;
+        }
+
+        .main-header {
+            background: #ffffff;
+            box-shadow: 0 2px 20px rgba(6, 45, 84, 0.08);
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px 0 0;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo {
+            height: 35px;
+            width: auto;
+        }
+
+        .page-wrapper {
+            padding: 20px;
         }
 
         .container { 
@@ -228,69 +261,82 @@
             .content {
                 padding: 25px;
             }
+
+            .logo {
+                height: 30px;
+            }
         }
     </style>
 </head>
 <body>
-
-    <div class="container">
-        <div class="header">
-            <h1>Downtime Cost Calculator</h1>
-            <p>Calculate the value lost for every hour of mining downtime using current metal prices</p>
+    <header class="main-header">
+        <div class="header-content">
+            <div class="logo-container">
+                <img src="Unison_Logo_v2.png" alt="Unison Mining Consulting" class="logo">
+            </div>
         </div>
+    </header>
 
-        <div class="content">
-            <div class="section">
-                <h3>Metal Prices</h3>
-                <div class="price-inputs">
-                    <div class="price-input">
-                        <label for="gold-price">Gold Price (USD/oz)</label>
-                        <input type="number" id="gold-price" value="2000" step="0.01" oninput="updateCalculator()">
-                    </div>
-                    <div class="price-input">
-                        <label for="silver-price">Silver Price (USD/oz)</label>
-                        <input type="number" id="silver-price" value="25" step="0.01" oninput="updateCalculator()">
-                    </div>
-                    <div class="price-input">
-                        <label for="copper-price">Copper Price (USD/lb)</label>
-                        <input type="number" id="copper-price" value="4.5" step="0.01" oninput="updateCalculator()">
-                    </div>
-                </div>
+    <div class="page-wrapper">
+        <div class="container">
+            <div class="header">
+                <h1>Downtime Cost Calculator</h1>
+                <p>Calculate the value lost for every hour of mining downtime using current metal prices</p>
             </div>
 
-            <div class="section">
-                <h3>Mining Parameters</h3>
-                <div class="form-group">
-                    <label for="metal">Select Metal:</label>
-                    <select id="metal" onchange="updateCalculator()">
-                        <option value="gold" selected>Gold</option>
-                        <option value="silver">Silver</option>
-                        <option value="copper">Copper</option>
-                    </select>
-                </div>
-
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="tonnes">Tonnes per Hour Lost:</label>
-                        <input type="number" id="tonnes" value="125" step="0.1" oninput="calculateValue()">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="grade">Grade <span id="grade-unit" class="unit">(g/t)</span>:</label>
-                        <input type="number" id="grade" value="2" step="0.01" oninput="calculateValue()">
+            <div class="content">
+                <div class="section">
+                    <h3>Metal Prices</h3>
+                    <div class="price-inputs">
+                        <div class="price-input">
+                            <label for="gold-price">Gold Price (USD/oz)</label>
+                            <input type="number" id="gold-price" value="2000" step="0.01" oninput="updateCalculator()">
+                        </div>
+                        <div class="price-input">
+                            <label for="silver-price">Silver Price (USD/oz)</label>
+                            <input type="number" id="silver-price" value="25" step="0.01" oninput="updateCalculator()">
+                        </div>
+                        <div class="price-input">
+                            <label for="copper-price">Copper Price (USD/lb)</label>
+                            <input type="number" id="copper-price" value="4.5" step="0.01" oninput="updateCalculator()">
+                        </div>
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <label for="recovery">Recovery Rate (%):</label>
-                    <input type="number" id="recovery" value="90" step="0.1" min="0" max="100" oninput="calculateValue()">
-                </div>
-            </div>
+                <div class="section">
+                    <h3>Mining Parameters</h3>
+                    <div class="form-group">
+                        <label for="metal">Select Metal:</label>
+                        <select id="metal" onchange="updateCalculator()">
+                            <option value="gold" selected>Gold</option>
+                            <option value="silver">Silver</option>
+                            <option value="copper">Copper</option>
+                        </select>
+                    </div>
 
-            <div id="result">
-                <h4>Value Lost per Hour</h4>
-                <div id="result-value">$0.00</div>
-                <div class="info-text">Based on current market prices and mining parameters</div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="tonnes">Tonnes per Hour Lost:</label>
+                            <input type="number" id="tonnes" value="125" step="0.1" oninput="calculateValue()">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="grade">Grade <span id="grade-unit" class="unit">(g/t)</span>:</label>
+                            <input type="number" id="grade" value="2" step="0.01" oninput="calculateValue()">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="recovery">Recovery Rate (%):</label>
+                        <input type="number" id="recovery" value="90" step="0.1" min="0" max="100" oninput="calculateValue()">
+                    </div>
+                </div>
+
+                <div id="result">
+                    <h4>Value Lost per Hour</h4>
+                    <div id="result-value">$0.00</div>
+                    <div class="info-text">Based on current market prices and mining parameters</div>
+                </div>
             </div>
         </div>
     </div>
