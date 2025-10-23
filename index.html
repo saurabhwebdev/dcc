@@ -245,6 +245,179 @@
             display: none; 
         }
 
+        /* Floating Help Button */
+        .help-button {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #3cca70 0%, #2fb565 100%);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 1.8rem;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(60, 202, 112, 0.4);
+            transition: all 0.3s ease;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .help-button:hover {
+            background: linear-gradient(135deg, #2fb565 0%, #28a745 100%);
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 6px 25px rgba(60, 202, 112, 0.5);
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(6, 45, 84, 0.7);
+            backdrop-filter: blur(4px);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: white;
+            border-radius: 16px;
+            max-width: 700px;
+            width: 90%;
+            max-height: 85vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            animation: slideUp 0.3s ease;
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, #062d54 0%, #0a3a6b 100%);
+            color: white;
+            padding: 25px 30px;
+            border-radius: 16px 16px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h2 {
+            margin: 0;
+            font-size: 1.6rem;
+            font-weight: 600;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+            width: auto;
+            padding: 0;
+            line-height: 1;
+            opacity: 0.8;
+            transition: opacity 0.2s;
+            box-shadow: none;
+        }
+
+        .modal-close:hover {
+            opacity: 1;
+            transform: none;
+            background: none;
+        }
+
+        .modal-content {
+            padding: 30px;
+            color: #062d54;
+        }
+
+        .modal-content h3 {
+            color: #062d54;
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #3cca70;
+        }
+
+        .modal-content h3:first-child {
+            margin-top: 0;
+        }
+
+        .modal-content p {
+            margin-bottom: 15px;
+            line-height: 1.7;
+            color: #495057;
+        }
+
+        .modal-content .formula {
+            background: #f8f9fa;
+            padding: 15px 20px;
+            border-radius: 8px;
+            border-left: 4px solid #3cca70;
+            font-family: 'Courier New', monospace;
+            margin: 15px 0;
+            color: #062d54;
+            font-weight: 500;
+        }
+
+        .modal-content .step {
+            background: #f8f9fa;
+            padding: 12px 18px;
+            border-radius: 8px;
+            margin: 10px 0;
+            border-left: 3px solid #3cca70;
+        }
+
+        .modal-content .example {
+            background: #e7f5ed;
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border-left: 4px solid #3cca70;
+        }
+
+        .modal-content ul {
+            margin-left: 20px;
+            margin-bottom: 15px;
+        }
+
+        .modal-content li {
+            margin-bottom: 8px;
+            line-height: 1.6;
+            color: #495057;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { 
+                transform: translateY(50px);
+                opacity: 0;
+            }
+            to { 
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
         @media (max-width: 768px) {
             .form-row {
                 grid-template-columns: 1fr;
@@ -264,6 +437,23 @@
 
             .logo {
                 height: 30px;
+            }
+
+            .help-button {
+                width: 50px;
+                height: 50px;
+                font-size: 1.5rem;
+                bottom: 20px;
+                right: 20px;
+            }
+
+            .modal {
+                width: 95%;
+                max-height: 90vh;
+            }
+
+            .modal-content {
+                padding: 20px;
             }
         }
     </style>
@@ -286,25 +476,7 @@
 
             <div class="content">
                 <div class="section">
-                    <h3>Metal Prices</h3>
-                    <div class="price-inputs">
-                        <div class="price-input">
-                            <label for="gold-price">Gold Price (USD/oz)</label>
-                            <input type="number" id="gold-price" value="2000" step="0.01" oninput="updateCalculator()">
-                        </div>
-                        <div class="price-input">
-                            <label for="silver-price">Silver Price (USD/oz)</label>
-                            <input type="number" id="silver-price" value="25" step="0.01" oninput="updateCalculator()">
-                        </div>
-                        <div class="price-input">
-                            <label for="copper-price">Copper Price (USD/lb)</label>
-                            <input type="number" id="copper-price" value="4.5" step="0.01" oninput="updateCalculator()">
-                        </div>
-                    </div>
-                </div>
-
-                <div class="section">
-                    <h3>Mining Parameters</h3>
+                    <h3>Metal Selection</h3>
                     <div class="form-group">
                         <label for="metal">Select Metal:</label>
                         <select id="metal" onchange="updateCalculator()">
@@ -313,7 +485,14 @@
                             <option value="copper">Copper</option>
                         </select>
                     </div>
+                    <div class="form-group">
+                        <label for="metal-price"><span id="metal-price-label">Gold Price (USD/oz)</span>:</label>
+                        <input type="number" id="metal-price" value="2000" step="0.01" oninput="calculateValue()">
+                    </div>
+                </div>
 
+                <div class="section">
+                    <h3>Mining Parameters</h3>
                     <div class="form-row">
                         <div class="form-group">
                             <label for="tonnes">Tonnes per Hour Lost:</label>
@@ -341,11 +520,83 @@
         </div>
     </div>
 
+    <!-- Floating Help Button -->
+    <button class="help-button" onclick="openModal()" aria-label="Help">?</button>
+
+    <!-- Help Modal -->
+    <div class="modal-overlay" id="helpModal" onclick="closeModalOnOverlay(event)">
+        <div class="modal">
+            <div class="modal-header">
+                <h2>How Calculations Work</h2>
+                <button class="modal-close" onclick="closeModal()" aria-label="Close">&times;</button>
+            </div>
+            <div class="modal-content">
+                <h3>Overview</h3>
+                <p>This calculator determines the monetary value lost per hour when mining operations experience downtime. It considers the ore processing rate, metal grade, recovery efficiency, and current market prices.</p>
+
+                <h3>Gold & Silver Calculation</h3>
+                <p>For precious metals measured in grams per tonne (g/t):</p>
+                <div class="step">Step 1: Calculate grams of metal<br><strong>Tonnes × Grade (g/t) = Grams of Metal</strong></div>
+                <div class="step">Step 2: Apply recovery rate<br><strong>Grams × (Recovery % ÷ 100) = Recovered Grams</strong></div>
+                <div class="step">Step 3: Convert to troy ounces<br><strong>Recovered Grams ÷ 31.1035 = Troy Ounces</strong></div>
+                <div class="step">Step 4: Calculate value<br><strong>Troy Ounces × Price per Ounce = Value Lost</strong></div>
+                
+                <div class="example">
+                    <strong>Example (Gold):</strong><br>
+                    • 125 tonnes/hour × 2 g/t = 250 grams<br>
+                    • 250 grams × 90% recovery = 225 grams<br>
+                    • 225 ÷ 31.1035 = 7.23 troy oz<br>
+                    • 7.23 oz × $2,000 = <strong>$14,466/hour lost</strong>
+                </div>
+
+                <h3>Copper Calculation</h3>
+                <p>For base metals measured in percentage (%):</p>
+                <div class="step">Step 1: Calculate kilograms of copper<br><strong>Tonnes × Grade (%) × 10 = Kilograms of Copper</strong><br><span style="font-size: 0.9em; color: #6c757d;">Note: 1% grade = 10 kg per tonne</span></div>
+                <div class="step">Step 2: Apply recovery rate<br><strong>Kilograms × (Recovery % ÷ 100) = Recovered Kg</strong></div>
+                <div class="step">Step 3: Convert to pounds<br><strong>Recovered Kg × 2.20462 = Pounds</strong></div>
+                <div class="step">Step 4: Calculate value<br><strong>Pounds × Price per Pound = Value Lost</strong></div>
+                
+                <div class="example">
+                    <strong>Example (Copper):</strong><br>
+                    • 125 tonnes/hour × 2% × 10 = 2,500 kg<br>
+                    • 2,500 kg × 90% recovery = 2,250 kg<br>
+                    • 2,250 × 2.20462 = 4,960 lbs<br>
+                    • 4,960 lbs × $4.50 = <strong>$22,320/hour lost</strong>
+                </div>
+
+                <h3>Key Constants</h3>
+                <ul>
+                    <li><strong>31.1035 grams = 1 troy ounce</strong> (precious metals standard)</li>
+                    <li><strong>2.20462 pounds = 1 kilogram</strong></li>
+                    <li><strong>1% copper grade = 10 kg per tonne</strong></li>
+                </ul>
+
+                <h3>Input Parameters</h3>
+                <ul>
+                    <li><strong>Metal Price:</strong> Current market price (USD/oz for gold/silver, USD/lb for copper)</li>
+                    <li><strong>Tonnes per Hour:</strong> Ore processing rate during normal operations</li>
+                    <li><strong>Grade:</strong> Metal content concentration (g/t for gold/silver, % for copper)</li>
+                    <li><strong>Recovery Rate:</strong> Percentage of metal successfully extracted (typically 85-95%)</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
     <script>
         // --- Constants ---
         const G_PER_OZ = 31.1035;
         const LB_PER_KG = 2.20462;
         const KG_PER_TONNE_PERCENT = 10; // 1% grade = 10 kg/t
+
+        // Store default prices for each metal
+        const defaultPrices = {
+            gold: 2000,
+            silver: 25,
+            copper: 4.5
+        };
+
+        // Store current prices for each metal
+        let currentPrices = { ...defaultPrices };
 
         /**
          * Updates labels and price when the dropdown changes.
@@ -353,12 +604,23 @@
         function updateCalculator() {
             const metal = document.getElementById('metal').value;
             const gradeUnit = document.getElementById('grade-unit');
+            const priceLabel = document.getElementById('metal-price-label');
+            const priceInput = document.getElementById('metal-price');
 
+            // Update grade unit label
             if (metal === 'copper') {
                 gradeUnit.textContent = '(%)';
-            } else {
+                priceLabel.textContent = 'Copper Price (USD/lb)';
+            } else if (metal === 'gold') {
                 gradeUnit.textContent = '(g/t)';
+                priceLabel.textContent = 'Gold Price (USD/oz)';
+            } else if (metal === 'silver') {
+                gradeUnit.textContent = '(g/t)';
+                priceLabel.textContent = 'Silver Price (USD/oz)';
             }
+
+            // Update price input to show the current price for selected metal
+            priceInput.value = currentPrices[metal];
 
             // Re-run the calculation
             calculateValue();
@@ -372,28 +634,27 @@
             const metal = document.getElementById('metal').value;
             const tonnes = parseFloat(document.getElementById('tonnes').value) || 0;
             const grade = parseFloat(document.getElementById('grade').value) || 0;
-            const recovery = parseFloat(document.getElementById('recovery').value) / 100 || 0;
+            const recoveryPercent = parseFloat(document.getElementById('recovery').value) || 0;
+            const recovery = recoveryPercent / 100;
 
-            // Get price based on selected metal
-            let price = 0;
-            if (metal === 'gold') {
-                price = parseFloat(document.getElementById('gold-price').value) || 0;
-            } else if (metal === 'silver') {
-                price = parseFloat(document.getElementById('silver-price').value) || 0;
-            } else if (metal === 'copper') {
-                price = parseFloat(document.getElementById('copper-price').value) || 0;
-            }
+            // Get price from the single price input and store it
+            const price = parseFloat(document.getElementById('metal-price').value) || 0;
+            currentPrices[metal] = price;
 
             let valuePerHour = 0;
 
             // 2. Perform calculation based on metal
             if (metal === 'gold' || metal === 'silver') {
-                // (Tonnes * g/t) * recovery_factor / g_per_oz * price_per_oz
-                valuePerHour = (tonnes * grade * recovery / G_PER_OZ) * price;
+                // Gold/Silver: (Tonnes * g/t) gives grams of metal
+                const gramsOfMetal = tonnes * grade;
+                const recoveredGrams = gramsOfMetal * recovery;
+                const troyOunces = recoveredGrams / G_PER_OZ;
+                valuePerHour = troyOunces * price;
             } else if (metal === 'copper') {
-                // (Tonnes * %_grade * 10) * recovery_factor * lb_per_kg * price_per_lb
-                const kgPerHour = tonnes * grade * KG_PER_TONNE_PERCENT;
-                const recoveredKg = kgPerHour * recovery;
+                // Copper: grade is in %, so grade * 10 gives kg/tonne
+                // tonnes * grade * 10 gives total kg of copper
+                const kgOfCopper = tonnes * grade * KG_PER_TONNE_PERCENT;
+                const recoveredKg = kgOfCopper * recovery;
                 const recoveredLb = recoveredKg * LB_PER_KG;
                 valuePerHour = recoveredLb * price;
             }
@@ -410,6 +671,44 @@
         // Initialize the calculator when the page loads
         document.addEventListener('DOMContentLoaded', function() {
             calculateValue();
+        });
+
+        // === Modal Functions ===
+        
+        /**
+         * Opens the help modal
+         */
+        function openModal() {
+            const modal = document.getElementById('helpModal');
+            modal.classList.add('active');
+            // Prevent body scroll when modal is open
+            document.body.style.overflow = 'hidden';
+        }
+
+        /**
+         * Closes the help modal
+         */
+        function closeModal() {
+            const modal = document.getElementById('helpModal');
+            modal.classList.remove('active');
+            // Restore body scroll
+            document.body.style.overflow = 'auto';
+        }
+
+        /**
+         * Closes modal when clicking on overlay (not on modal content)
+         */
+        function closeModalOnOverlay(event) {
+            if (event.target.id === 'helpModal') {
+                closeModal();
+            }
+        }
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeModal();
+            }
         });
     </script>
 
